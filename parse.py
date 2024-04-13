@@ -17,13 +17,16 @@ for root, dirs, files in os.walk(base_path):
     for directory in dirs:
         # Process each subfolder
         file_path = os.path.join(root, directory)
+        file_path += "/full-submission.txt"
         print(file_path)
-        with open(file_path + "/full-submission.txt", 'r') as f:
+        with open(file_path, 'r') as f:
             
             # parse contents into a string
             contents = f.read()
-            soup = BeautifulSoup(contents, "html.parser")
-            body_text = soup.body.get_text(separator= ' ')
+            body_text = contents
+            if body_text.find("<html>") != -1:
+                soup = BeautifulSoup(contents, "html.parser")
+                body_text = soup.body.get_text()
 
             # parsing data and extracting only selected financial statements from the 10-K (assumes they are always Item 6.)
             to_remove = ['\n', '\u00A0', ' '] # removing various characters that will interfere with string.find() method
@@ -31,8 +34,12 @@ for root, dirs, files in os.walk(base_path):
                 body_text = body_text.replace(char, " ")
             body_text = body_text.lower()
 
-            start = find_nth(body_text, "item 7a.", 2)
-            end = find_nth(body_text, "item 8.", 2)
+            start = find_nth(body_text, "quantitative and qualitative disclosures about market risk", 2)
+            if start == -1:
+                start = find_nth(body_text, "quantitative and qualitative disclosures of market risk", 2)
+            end = find_nth(body_text, "financial statements and supplementary data", 2)
+            if end == -1:
+                end = find_nth(body_text, "financial statements and supplemental data", 2)
 
             print(start)
             print(end)
@@ -43,5 +50,6 @@ for root, dirs, files in os.walk(base_path):
             file.close()
 
         statement_number += 1
-# item 7a (which we are extracting) contains exposure to market risk data -> investors might want to know this
-# depending on their tolerance for exposure to macroeconomic conditions/risk (e.g., NVDA investing in MBS in 2006, etc.)
+
+
+ 
