@@ -13,12 +13,19 @@ def find_nth(input, substring, n):
         n -= 1
     return start
 
+def find_year(filepath):
+    start = filepath.find("10-K") + len("10-K")
+    end = filepath.find("full-submission")
+    filepath = filepath[start : end]
+    return filepath[12 : 14]
+
 for root, dirs, files in os.walk(base_path):
     for directory in dirs:
         # Process each subfolder
         file_path = os.path.join(root, directory)
         file_path += "/full-submission.txt"
-        print(file_path)
+        print(find_year(file_path))
+
         with open(file_path, 'r') as f:
             
             # parse contents into a string
@@ -41,15 +48,14 @@ for root, dirs, files in os.walk(base_path):
             if end == -1:
                 end = find_nth(body_text, "financial statements and supplemental data", 2)
 
-            print(start)
-            print(end)
-            body_text = body_text[start : end]
+            if start != -1 or end != -1:
+                body_text = body_text[start : end]
 
-            file = open("/Users/anandkrishnan/Desktop/FSIL project/sec-edgar-filings/financial_statements/" + company_name + str(statement_number) + ".txt", "w")
-            file.write(body_text)
-            file.close()
+                file = open("/Users/anandkrishnan/Desktop/FSIL project/sec-edgar-filings/financial_statements/" + company_name + find_year(file_path) + ".txt", "w")
+                file.write(body_text)
+                file.close()
 
         statement_number += 1
-
-
  
+# we can disregard all years that have -1 in start or end and then pull data at even intervals from the rest to limit
+# token usage and runtime
