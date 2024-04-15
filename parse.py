@@ -4,7 +4,6 @@ import os
 
 company_name = downloader.get_company()
 base_path = "/Users/anandkrishnan/Desktop/FSIL project/sec-edgar-filings/" + company_name + "/10-K"
-statement_number = 0
 
 def find_nth(input, substring, n):
     start = input.find(substring)
@@ -24,7 +23,6 @@ for root, dirs, files in os.walk(base_path):
         # Process each subfolder
         file_path = os.path.join(root, directory)
         file_path += "/full-submission.txt"
-        print(find_year(file_path))
 
         with open(file_path, 'r') as f:
             
@@ -48,14 +46,20 @@ for root, dirs, files in os.walk(base_path):
             if end == -1:
                 end = find_nth(body_text, "financial statements and supplemental data", 2)
 
-            if start != -1 or end != -1:
+            if start != -1 and end != -1:
                 body_text = body_text[start : end]
+                
+                filename = company_name + find_year(file_path)
 
-                file = open("/Users/anandkrishnan/Desktop/FSIL project/sec-edgar-filings/financial_statements/" + company_name + find_year(file_path) + ".txt", "w")
+                file = open("/Users/anandkrishnan/Desktop/FSIL project/sec-edgar-filings/financial_statements/" + filename + ".txt", "w")
                 file.write(body_text)
                 file.close()
 
-        statement_number += 1
- 
+def get_filings():
+    filepath = "/Users/anandkrishnan/Desktop/FSIL project/sec-edgar-filings/financial_statements"
+    for root, dirs, files in os.walk(filepath):
+        files.remove('.DS_Store')
+        return sorted(files)
+
 # we can disregard all years that have -1 in start or end and then pull data at even intervals from the rest to limit
 # token usage and runtime
