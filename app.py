@@ -14,11 +14,19 @@ def process_text():
 
     # Call your existing script with the user input
     output = process_input.main(user_input)
+    print(output)
+    
+    questions = ["Macroeconomic Risks", "Future Risk Outlook", "Historical Risk", "Possible Improvements"]
 
-    # Process output if needed
+    # for the purpose of testing
+    file = open("/Users/anandkrishnan/Desktop/FSIL project/sec-edgar-filings/test.txt", "w")
+    for message in output:
+        file.write(message)
+    file.close()
 
+    data = zip(output, questions)
     # Return the processed output
-    return output[0]
+    return render_template("result.html", output = output, ticker = user_input, data = data)
 
 if __name__ == "__main__":
     app.run(debug=True)
