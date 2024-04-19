@@ -10,14 +10,16 @@ def main(ticker):
     parse.read_write()
     filings = parse.get_filings()
 
-    filings_to_use = api_calls.pick_years(filings, 7)
+    filings_to_use = api_calls.pick_years(filings, 5)
     prompt = api_calls.generate_prompt(filings_to_use)
     print(prompt)
 
     output = api_calls.run_api(ticker, prompt)
+    content = [message.content for message in output]
     cleanup.main()
 
-    return output
+    return content
+
 
 
 
