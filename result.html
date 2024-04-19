@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generated Insight</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+      }
+      .header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+      }
+      .container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+      }
+      .box,
+      .graph {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        transition: transform 0.3s ease-in-out;
+      }
+      .box:hover,
+      .graph:hover {
+        transform: translateY(-5px);
+      }
+      .box h5,
+      .graph h3 {
+        margin-top: 0;
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .box p {
+        color: #666;
+        line-height: 1.6;
+      }
+      .graph img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <h1>Risk Analysis For {{ticker}}</h1>
+    </div>
+
+    <div class="container">
+      <div class="box">
+        <h5>Rationale For Picking Item 7a.</h5>
+        <p>
+          Item 7a. of a firm's 10-K details macroeconomic/future risk that the
+          firm might incur. This is very important for an informed investor to
+          optimize the risk profile of their portfolio.
+        </p>
+      </div>
+      {% for text, header in data %}
+      <div class="box">
+        <h5>{{ header }}</h5>
+        <p>{{ text }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <h2 style="text-align: center">Graphs</h2>
+    <div class="container">
+      <div class="graph">
+        <h3>Graph 1</h3>
+        <img src="path_to_image_1.jpg" alt="Graph 1" />
+      </div>
+      <div class="graph">
+        <h3>Graph 2</h3>
+        <img src="path_to_image_2.jpg" alt="Graph 2" />
+      </div>
+      <div class="graph">
+        <h3>Graph 3</h3>
+        <img src="path_to_image_3.jpg" alt="Graph 3" />
+      </div>
+    </div>
+  </body>
+</html>
