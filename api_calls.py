@@ -1,5 +1,3 @@
-import downloader
-import parse
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -34,17 +32,17 @@ results = []
 
 def run_api(company, filing_data):
     load_dotenv()
-    client = OpenAI(api_key="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") # resolve how to store api key
+    client = OpenAI(api_key="INSERT API KEY HERE")
 
-    primer = f"""You are a very confident, knowledgeable market analyst who can concisely analyze market risk factors affecting 
-    a company. Parse the below excerpts from {company}'s 10-K item 7a and answer the following questions. Item 7a over 
-    time for {company} is below.""" + '\n\n' + filing_data
+    primer = f"""You are a very confident, knowledgeable, and specific market analyst who can analyze market risk factors
+    affecting a company. Parse the below excerpts from {company}'s 10-K item 7a and answer the following questions. Item 7a over 
+    time for {company} is below. Make sure your answers use {company}'s name and don't include bulleted/numbered lists.""" + '\n\n' + filing_data
 
-    questions = ["What are some possible macroeconomic factors that pose risk to this firm?"
+    questions = ["What are some possible macroeconomic factors that pose risk to this firm?",
                 "Give a future outlook for this firm's risk profile", 
                 "How risky are this firm's investments historically?", 
                 "How should this company improve in order to lessen its risk profile?", 
-                "Give me some matplotlib code that generates graphs with some visualization for this company."]
+                "Give me some matplotlib code that generates specific graphs based on this data."]
 
     # priming message
     completion = client.chat.completions.create(
@@ -61,9 +59,8 @@ def run_api(company, filing_data):
                 {"role": "user", "content": question}
             ]
         )   
-
         results.append(completion.choices[0].message)
-        
+
     return results
 
 # should generate all text differently, so 5 different API calls to make a list with 5 elements that will be 
